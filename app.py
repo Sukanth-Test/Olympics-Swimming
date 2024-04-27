@@ -24,7 +24,7 @@ div.stButton > button:hover {
 </style>""", unsafe_allow_html=True)
 
 def predict(athlete_name, athlete_gender, distance, stroke_style, age):
-    loaded_model = load_model("models/finetuned_nn_model")
+    loaded_model = load_model("models/finetuned_nn_model.h5")
     loaded_scaler = joblib.load("scaler_obj.joblib")
 
     input = np.array([distance, stroke_style, athlete_gender, age]).reshape(1, -1)
