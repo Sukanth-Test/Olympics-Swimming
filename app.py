@@ -5,6 +5,10 @@ import numpy as np
 from keras.models import load_model
 from sklearn.preprocessing import StandardScaler
 import joblib
+import logging
+import traceback
+
+logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
 
 st.set_page_config(page_title="Local Swimming Records Prediction", page_icon=":swimmer:")
 
@@ -24,32 +28,37 @@ div.stButton > button:hover {
 </style>""", unsafe_allow_html=True)
 
 def predict(athlete_name, athlete_gender, distance, stroke_style, age):
-    loaded_model = load_model("models/finetuned_nn_model.h5")
-    loaded_scaler = joblib.load("scaler_obj.joblib")
+    try:
+        loaded_model = load_model("models/finetuned_nn_model.h5")
+        loaded_scaler = joblib.load("scaler_obj.joblib")
 
-    input = np.array([distance, stroke_style, athlete_gender, age]).reshape(1, -1)
-    input_scaled = loaded_scaler.transform(input)
+        input = np.array([distance, stroke_style, athlete_gender, age]).reshape(1, -1)
+        input_scaled = loaded_scaler.transform(input)
 
-    pred = loaded_model.predict(input_scaled)
-    pred = np.round(pred[0][0], 2)
+        pred = loaded_model.predict(input_scaled)
+        pred = np.round(pred[0][0], 2)
 
-    result = ""
-    mins = str(int(pred // 60))
-    secs = str(np.round((pred % 60), 2))
-    
-    secs = secs.split(".")
-    if len(secs[0]) == 1:
-        secs[0] = "0"+secs[0]
-    secs = ".".join(secs)
+        result = ""
+        mins = str(int(pred // 60))
+        secs = str(np.round((pred % 60), 2))
+        
+        secs = secs.split(".")
+        if len(secs[0]) == 1:
+            secs[0] = "0"+secs[0]
+        secs = ".".join(secs)
 
-    if len(mins) == 1:
-        mins = "0"+mins
-    
-    result = mins+":"+secs
+        if len(mins) == 1:
+            mins = "0"+mins
+        
+        result = mins+":"+secs
 
-    prediction = st.header(f"Prediction for {athlete_name}: {result}")
+        prediction = st.header(f"Prediction for {athlete_name}: {result}")
 
-    return prediction
+        return prediction
+    except Exception as e:
+        logging.error("An error occurred in predict function:")
+        logging.error(traceback.format_exc())
+        raise e
 
 # Main function to create the Streamlit app
 def main():
