@@ -2,7 +2,7 @@
 - Python Download Link: https://www.python.org/downloads/
 - Anaconda3 Download Link (for Windows): https://docs.anaconda.com/free/anaconda/install/windows/ 
 - **NOTE:** Ensure you select the check box "Add Python to Path" and "Add Anaconda3 to Path" while insatlling python and anaconda3 respectively.
-- In your command prompt when you type the commands **python --version** and **conda --version**, and if you see respective versions of the softwares, then your installation process is successful.
+- In your command prompt when you type the commands **"python --version"** and **"conda --version"**, and if you see respective versions of the softwares, then your installation process is successful.
 - Having Anaconda3 is optional, you can install packages using python venv or without virtual environment. But it is recommended to use conda to work with seperate virtual environments for individual projects.
 
 # Create Conda Environment and Install Packages
